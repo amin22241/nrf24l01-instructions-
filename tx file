@@ -1,0 +1,55 @@
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
+#define CE_PIN   7
+#define CSN_PIN  8
+
+RF24 radio(CE_PIN, CSN_PIN);
+const byte receiverAddress[5] = {'R','x','A','A','A'};
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(CSN_PIN, OUTPUT);
+  
+  if (!radio.begin()) {
+    Serial.println(F("NRF24L01 not responding!"));
+    while(1);
+  }
+
+  radio.openWritingPipe(receiverAddress);
+  radio.setDataRate(RF24_250KBPS);
+  radio.setPALevel(RF24_PA_LOW);
+  radio.setRetries(3, 5);
+  radio.stopListening();
+
+  Serial.println(F("Transmitter ready"));
+  radio.printPrettyDetails(); // Public diagnostic method
+}
+
+void loop() {
+  static uint32_t packetCount = 0;
+  char payload[10];
+  sprintf(payload, "PKT%04lu", packetCount);
+  
+  Serial.print(F("Sending: "));
+  Serial.print(payload);
+  
+  bool success = radio.write(&payload, sizeof(payload));
+  
+  if (success) {
+    Serial.println(F(" - Success!"));
+    packetCount++;
+  } else {
+    Serial.println(F(" - Failed!"));
+    
+    // PROPER way to check status:
+    Serial.print(F("Retry attempts: "));
+    Serial.println(radio.getARC()); // Public method
+    
+    Serial.print(F("Max retries reached? "));
+    Serial.println(radio.getARC() >= 15 ? "YES" : "NO");
+  }
+
+  delay(2000);
+}
