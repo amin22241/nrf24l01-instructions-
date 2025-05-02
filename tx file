@@ -24,7 +24,7 @@ void setup() {
   radio.stopListening();
 
   Serial.println(F("Transmitter ready"));
-  radio.printPrettyDetails(); // Public diagnostic method
+  radio.printPrettyDetails(); 
 }
 
 void loop() {
@@ -43,9 +43,9 @@ void loop() {
   } else {
     Serial.println(F(" - Failed!"));
     
-    // PROPER way to check status:
+   
     Serial.print(F("Retry attempts: "));
-    Serial.println(radio.getARC()); // Public method
+    Serial.println(radio.getARC()); 
     
     Serial.print(F("Max retries reached? "));
     Serial.println(radio.getARC() >= 15 ? "YES" : "NO");
