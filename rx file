@@ -24,7 +24,7 @@ void setup() {
 
   Serial.println(F("Receiver ready"));
   Serial.print(F("Chip connected: "));
-  Serial.println(radio.isChipConnected() ? "YES" : "NO"); // Public method
+  Serial.println(radio.isChipConnected() ? "YES" : "NO"); 
 }
 
 void loop() {
