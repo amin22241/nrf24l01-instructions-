@@ -1,0 +1,5 @@
+you must know that the nrf24 is super sensetive to noise even wifi
+the ideal setup is a noiseless and open area
+for the powering:
+you have to use 3.3v regulator for the gnd and vcc pins also you have to use a 1000uf capacitor to prevent powershortage
+also have in mind that the other pins are 5v tolerant 
